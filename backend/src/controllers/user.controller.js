@@ -276,3 +276,40 @@ exports.searchAthletes = async (req, res) => {
         res.status(500).json({ message: "Error searching athletes" });
     }
 };
+
+// @desc    Get Top 10 Athletes by Region and/or Sport
+// @route   GET /api/users/leaderboard
+exports.getRegionalLeaderboard = async (req, res) => {
+    try {
+        const { location, sport, limit } = req.query;
+
+        // 1. Base query: Only look at athletes
+        let query = { role: 'athlete' };
+
+        // 2. Filter by City Name (Case-Insensitive)
+        if (location) {
+            query.location = { $regex: location, $options: 'i' };
+        }
+
+        // 3. Optional: Filter by Sport (e.g., "Top 10 Footballers in Kochi")
+        if (sport) {
+            query.sport = sport;
+        }
+
+        // 4. Execute Query, Sort, and Limit
+        const leaderboard = await User.find(query)
+            .sort({ 'scoutScore.metaScore': -1 }) // The Magic: -1 means Descending (Highest to Lowest)
+            .limit(Number(limit) || 10) // Default to Top 10 if no limit is provided
+            .select('name location sport playerRole scoutScore.metaScore profileImage'); // Keep payload light
+
+        res.status(200).json({
+            success: true,
+            title: `Top ${leaderboard.length} Athletes${location ? ' in ' + location : ''}`,
+            data: leaderboard
+        });
+
+    } catch (error) {
+        console.error("Leaderboard Error:", error);
+        res.status(500).json({ message: "Error fetching leaderboard" });
+    }
+};

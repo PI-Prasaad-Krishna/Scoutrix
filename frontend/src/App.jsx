@@ -9,6 +9,8 @@ import ForScoutsPage from './pages/ForScoutsPage';
 import BySportPage from './pages/BySportPage';
 import ByRegionPage from './pages/ByRegionPage';
 import AuthModal from './components/AuthModal';
+import AthleteDashboard from './pages/AthleteDashboard';
+import RecruiterDashboard from './pages/RecruiterDashboard';
 import './App.css';
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
         <Route path="/scouts" element={<ForScoutsPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
         <Route path="/sports" element={<BySportPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
         <Route path="/regions" element={<ByRegionPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
+        <Route path="/dashboard/athlete" element={<AthleteDashboard />} />
+        <Route path="/dashboard/recruiter" element={<RecruiterDashboard />} />
       </Routes>
       <Footer />
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />

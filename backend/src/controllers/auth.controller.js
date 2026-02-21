@@ -15,7 +15,7 @@ exports.register = async (req, res) => {
     try {
         // Explicitly extract ONLY the allowed fields to prevent stat-stuffing
         const { 
-            name, email, password, role, location, phoneNumber, 
+            name, email, password, role, location, phoneNumber, age,
             sport, playerRole, subRole, style, bio, height, weight, // Athlete specific
             organization // Recruiter specific
         } = req.body;
@@ -45,7 +45,8 @@ exports.register = async (req, res) => {
             bio,
             height,
             weight,
-            organization
+            organization,
+            age
         });
 
         // 4. Return success response with cookie

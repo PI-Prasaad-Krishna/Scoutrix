@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './RecruiterApplicants.css';
 
-const API = 'http://localhost:3000/api';
+const API = 'https://scoutrix.onrender.com/api';
 
 const RecruiterApplicants = () => {
     const [opportunities, setOpportunities] = useState([]);
@@ -12,7 +12,7 @@ const RecruiterApplicants = () => {
     useEffect(() => {
         const fetchOpps = async () => {
             try {
-                const res = await fetch(`${API}/opportunities/me`, { credentials: 'include' });
+                const res = await fetch(`${API}/opportunities/me`, { headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` } });
                 if (!res.ok) throw new Error('Failed to fetch your opportunities');
                 const data = await res.json();
                 setOpportunities(data);

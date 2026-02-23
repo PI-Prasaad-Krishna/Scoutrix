@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './AutomatedRecruitment.css';
 
-const API = 'http://localhost:3000/api';
+const API = 'https://scoutrix.onrender.com/api';
 
 const SPORTS = ['Cricket', 'Football', 'Badminton', 'All'];
 
@@ -29,9 +29,8 @@ const AutomatedRecruitment = () => {
         try {
             const res = await fetch(`${API}/recruit/shortlist`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-                credentials: 'include'
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` },
+                body: JSON.stringify(formData)
             });
 
             if (!res.ok) {

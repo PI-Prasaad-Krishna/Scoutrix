@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SavedProfiles.css';
 
-const API = 'http://localhost:3000/api';
+const API = 'https://scoutrix.onrender.com/api';
 
 const getSportColor = s => ({ Cricket: '#00e5a0', Badminton: '#a78bfa', Football: '#fbbf24' }[s] || '#38bdf8');
 
@@ -48,7 +48,7 @@ const SavedAthleteCard = ({ athlete, onUnsave }) => {
         try {
             const r = await fetch(`${API}/users/save/${athlete._id}`, {
                 method: 'POST',
-                credentials: 'include'
+                headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` }
             });
             if (r.ok) {
                 // Update localStorage
@@ -180,7 +180,7 @@ const SavedProfiles = ({ user }) => {
     useEffect(() => {
         (async () => {
             try {
-                const r = await fetch(`${API}/users/saved`, { credentials: 'include' });
+                const r = await fetch(`${API}/users/saved`, { headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` } });
                 if (r.status === 401) throw new Error('__auth__');
                 if (!r.ok) throw new Error(`Server error (${r.status})`);
                 setAthletes(await r.json());

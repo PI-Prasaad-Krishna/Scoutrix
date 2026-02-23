@@ -1,6 +1,6 @@
 // All translation calls go through our backend proxy to avoid CORS issues.
 // The backend relays the request to https://api.sarvam.ai/translate with the API key.
-const PROXY_URL = 'http://localhost:3000/api/translate';
+const PROXY_URL = 'https://scoutrix.onrender.com/api/translate';
 
 /**
  * Translate text via our backend proxy (which calls Sarvam AI)
@@ -15,7 +15,6 @@ export const translateText = async (text, targetLanguage) => {
         const response = await fetch(PROXY_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
             body: JSON.stringify({
                 input: text.trim(),
                 source_language_code: 'en-IN',

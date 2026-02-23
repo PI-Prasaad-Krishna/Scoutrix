@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Leaderboard.css';
 
-const API = 'http://localhost:3000/api';
+const API = 'https://scoutrix.onrender.com/api';
 
 const getSportColor = s => ({ Cricket: '#00e5a0', Badminton: '#a78bfa', Football: '#fbbf24' }[s] || '#38bdf8');
 
@@ -62,7 +62,7 @@ const Leaderboard = ({ theme }) => {
                 if (sport !== 'All') params.set('sport', sport);
                 if (region !== 'All India') params.set('location', region);
 
-                const r = await fetch(`${API}/leaderboard?${params}`, { credentials: 'include' });
+                const r = await fetch(`${API}/leaderboard?${params}`, { headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` } });
                 if (!r.ok) throw new Error(`Server error (${r.status})`);
                 const data = await r.json();
                 setAthletes(data.data || []);

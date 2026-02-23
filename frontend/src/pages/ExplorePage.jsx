@@ -257,8 +257,8 @@ const OpportunityCard = ({ opp }) => {
     const handleApply = async () => {
         setApplying(true);
         try {
-            const r = await fetch(`http://localhost:3000/api/opportunities/${opp._id}/apply`, {
-                method: 'POST', credentials: 'include'
+            const r = await fetch(`https://scoutrix.onrender.com/api/opportunities/${opp._id}/apply`, {
+                method: 'POST', headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` }
             });
             if (r.ok) setApplied(true);
         } catch (_) { }
@@ -333,9 +333,9 @@ const ExplorePage = () => {
         const fetchFeed = async () => {
             try {
                 // Fetch videos
-                const resVids = await fetch('http://localhost:3000/api/videos/feed', { credentials: 'include' });
+                const resVids = await fetch('https://scoutrix.onrender.com/api/videos/feed', { headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` } });
                 // Fetch opportunities
-                const resOpps = await fetch('http://localhost:3000/api/opportunities', { credentials: 'include' });
+                const resOpps = await fetch('https://scoutrix.onrender.com/api/opportunities', { headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` } });
 
                 if (resVids.status === 401 || resOpps.status === 401) throw new Error('__auth__');
                 if (!resVids.ok || !resOpps.ok) throw new Error(`Server error — please try again.`);

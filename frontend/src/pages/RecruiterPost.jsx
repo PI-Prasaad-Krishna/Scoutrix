@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './RecruiterPost.css';
 
-const API = 'http://localhost:3000/api';
+const API = 'https://scoutrix.onrender.com/api';
 
 const SPORTS = ['Cricket', 'Football', 'Badminton'];
 const ROLES = {
@@ -40,9 +40,8 @@ const RecruiterPost = ({ user }) => {
         try {
             const res = await fetch(`${API}/opportunities`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-                credentials: 'include' // needed for JWT cookie
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` },
+                body: JSON.stringify(formData)
             });
 
             if (!res.ok) {

@@ -108,8 +108,8 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
 
         try {
             const url = isLogin
-                ? 'http://localhost:3000/api/auth/login'
-                : 'http://localhost:3000/api/auth/register';
+                ? 'https://scoutrix.onrender.com/api/auth/login'
+                : 'https://scoutrix.onrender.com/api/auth/register';
 
             const payload = isLogin
                 ? { email: formData.email, password: formData.password }
@@ -118,7 +118,7 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
+
                 body: JSON.stringify(payload)
             });
 
@@ -129,6 +129,7 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
             }
 
             if (isLogin) {
+                localStorage.setItem('scoutrix_token', data.token); // Save token!
                 navigate(`/dashboard/${data.role}`);
                 if (onLoginSuccess) onLoginSuccess(data);
             } else {

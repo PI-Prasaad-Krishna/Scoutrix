@@ -58,13 +58,6 @@ exports.register = async (req, res) => {
         if (user) {
             const token = generateToken(user._id);
 
-            res.cookie('token', token, {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'none',
-                maxAge: 30 * 24 * 60 * 60 * 1000
-            });
-
             res.status(201).json({
                 _id: user._id,
                 name: user.name,
@@ -107,14 +100,6 @@ exports.login = async (req, res) => {
             // Generate token ONCE
             const token = generateToken(user._id);
 
-            // Set the token in an HTTP-only cookie
-            res.cookie('token', token, {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'none',
-                maxAge: 30 * 24 * 60 * 60 * 1000
-            });
-
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -146,11 +131,5 @@ exports.login = async (req, res) => {
 // @desc    Clear the auth cookie and log user out
 // @route   POST /api/auth/logout
 exports.logout = (req, res) => {
-    res.cookie('token', '', {
-        httpOnly: true,
-        expires: new Date(0), // Immediately expire the cookie
-        secure: true,
-        sameSite: 'none',
-    });
     res.status(200).json({ message: 'Logged out successfully' });
 };

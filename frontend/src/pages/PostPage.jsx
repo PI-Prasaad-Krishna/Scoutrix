@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Icons from '../components/Icons';
 import './PostPage.css';
 
-const API = 'http://localhost:3000/api';
+const API = 'https://scoutrix.onrender.com/api';
 
 /* ── time-ago helper ─────────────────────────────────────────────── */
 const timeAgo = (dateStr) => {
@@ -150,7 +150,7 @@ const Composer = ({ onPosted }) => {
 
             const res = await fetch(`${API}/videos/upload`, {
                 method: 'POST',
-                credentials: 'include',
+                headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` },
                 body: formData,
             });
 
@@ -408,7 +408,7 @@ const PostPage = ({ user }) => {
     const fetchMyPosts = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await fetch(`${API}/videos/my-posts`, { credentials: 'include' });
+            const res = await fetch(`${API}/videos/my-posts`, { headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` } });
             if (res.ok) { const d = await res.json(); setPosts(d); }
         } catch (_) { /* ignore */ }
         setLoading(false);

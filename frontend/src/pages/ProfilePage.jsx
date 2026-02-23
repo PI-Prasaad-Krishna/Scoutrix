@@ -7,7 +7,7 @@ import {
 import Icons from '../components/Icons';
 import './ProfilePage.css';
 
-const API = 'http://localhost:3000/api';
+const API = 'https://scoutrix.onrender.com/api';
 
 /* ── helpers ─────────────────────────────────────────────────── */
 const timeAgo = (d) => {
@@ -467,7 +467,7 @@ const ProfilePage = ({ user }) => {
     const fetchPosts = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await fetch(`${API}/videos/my-posts`, { credentials: 'include' });
+            const res = await fetch(`${API}/videos/my-posts`, { headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` } });
             if (res.ok) setPosts(await res.json());
         } catch (_) { }
         setLoading(false);

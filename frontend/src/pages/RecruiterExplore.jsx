@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import './RecruiterExplore.css';
 
-const API = 'http://localhost:3000/api';
+const API = 'https://scoutrix.onrender.com/api';
 
 /* ── helpers ─────────────────────────────────────────────── */
 const timeAgo = d => {
@@ -140,7 +140,7 @@ const AthleteCard = ({ post, showDetails, showScores, user }) => {
     const handleSave = async () => {
         setSaving(true);
         try {
-            const r = await fetch(`${API}/users/save/${a._id}`, { method: 'POST', credentials: 'include' });
+            const r = await fetch(`${API}/users/save/${a._id}`, { method: 'POST', headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` } });
             if (r.ok) {
                 setSaved(v => !v);
 
@@ -320,7 +320,7 @@ const RecruiterExplore = ({ user }) => {
     useEffect(() => {
         (async () => {
             try {
-                const r = await fetch(`${API}/videos/feed`, { credentials: 'include' });
+                const r = await fetch(`${API}/videos/feed`, { headers: { Authorization: `Bearer ${localStorage.getItem('scoutrix_token')}` } });
                 if (r.status === 401) throw new Error('__auth__');
                 if (!r.ok) throw new Error(`Server error (${r.status})`);
                 setPosts(await r.json());

@@ -8,9 +8,9 @@ AI Infrastructure for Grassroots Sports Discovery
 <p align="center">
   <img src="https://img.shields.io/badge/Frontend-React-blue" />
   <img src="https://img.shields.io/badge/Backend-Express-green" />
-  <img src="https://img.shields.io/badge/AI%20Pipeline-Python-yellow" />
+  <img src="https://img.shields.io/badge/AI%20Pipeline-TensorFlow.js-yellow" />
   <img src="https://img.shields.io/badge/Database-MongoDB-darkgreen" />
-  <img src="https://img.shields.io/badge/Maps-Mapbox-black" />
+  <img src="https://img.shields.io/badge/Auth-JWT-black" />
 </p>
 
 ---
@@ -47,7 +47,7 @@ Two roles. One performance-driven ecosystem.
 
 1. Record performance on any Android device  
 2. Upload video  
-3. AI extracts sport-specific metrics  
+3. AI extracts sport-specific metrics locally  
 4. SPI (Standardized Performance Index) generated  
 5. Athlete appears on verified leaderboard  
 
@@ -63,7 +63,7 @@ Two roles. One performance-driven ecosystem.
 ## **Core Features**
 
 ### **AI Video Analysis**
-MediaPipe and OpenCV extract biomechanical and sport-specific metrics from raw phone footage. Performance metrics are rendered directly onto video frames.
+MediaPipe Pose Detection via TensorFlow.js extracts biomechanical and sport-specific metrics locally from raw phone footage. Performance metrics are rendered directly onto video frames efficiently on the device without backend computing.
 
 ### **Standardized Performance Index (SPI)**
 Age, gender, and sport-normalized scoring engine enabling fair comparison across regions.
@@ -77,14 +77,11 @@ Requirement-based athlete ranking system generating downloadable reports.
 ### **Sport-wise Leaderboard**
 Filter by sport, age group, gender, state, and district.
 
-### **Talent Heatmap**
-District-level athlete density visualization powered by Mapbox GL.
-
 ### **Explore Narrative Engine**
 Live performance narratives generated using Google Gemini.
 
 ### **Offline-First Design**
-Local capture. Sync on connectivity restoration.
+Local capture and AI inference directly on the device. Syncs metadata securely to the cloud.
 
 ---
 
@@ -113,12 +110,11 @@ Local capture. Sync on connectivity restoration.
 |-----------|----------------|
 | Frontend | React + Vite |
 | Backend | Express.js |
-| AI / CV Pipeline | Python, MediaPipe, OpenCV, FFmpeg |
-| Database | MongoDB, Redis |
-| Authentication | Firebase Auth |
-| Video Storage | Cloudinary |
+| AI / CV Pipeline | TensorFlow.js, @tensorflow-models/pose-detection |
+| Database | MongoDB |
+| Authentication | Custom JWT Backend Auth |
+| Video/Image Storage | ImageKit CDN |
 | Narrative Engine | Google Gemini API |
-| Maps | Mapbox GL |
 
 ---
 
@@ -127,14 +123,11 @@ Local capture. Sync on connectivity restoration.
 ### **Video Processing Pipeline**
 
 Athlete Device  
-→ React Frontend  
+→ React Frontend (Local TF.js Analysis)  
+→ SPI Engine (Local Processing)
 → Express Backend  
-→ Multer Upload Middleware  
-→ FFmpeg Preprocessing  
-→ MediaPipe + OpenCV Analysis  
-→ SPI Engine  
+→ ImageKit CDN  
 → MongoDB  
-→ Cloudinary CDN  
 
 ### **Recruitment Engine Pipeline**
 
@@ -179,15 +172,17 @@ Scoutrix/
 │
 ├── frontend/
 │   ├── src/
+│   │   ├── components/
 │   │   └── pages/
 │   │
 │   └── public/
 │
 ├── backend/
-│   ├── index.js
-│   ├── routes/
-│   ├── scripts/
-│   │   └── analyze.py
+│   ├── src/
+│   │   ├── app.js
+│   │   ├── db/
+│   │   └── routes/
+│   ├── server.js
 │   └── uploads/
 │
 └── README.md
@@ -197,45 +192,59 @@ Scoutrix/
 ### **Prerequisites**
 
 - Node.js v18+  
-- Python 3.8 – 3.11  
 - MongoDB  
-- FFmpeg  
 
 ### **Backend Setup**
 
 ```bash
 cd backend
 npm install
-python -m venv venv
-venv\Scripts\activate
-pip install mediapipe opencv-python ffmpeg-python
-node index.js
-Frontend Setup
+npm start
+```
+*Note: Ensure your MongoDB server is running.*
+
+### **Frontend Setup**
+```bash
 cd frontend
 npm install
 npm run dev
-Environment Variables
-MONGODB_URI=
-FIREBASE_API_KEY=
-CLOUDINARY_URL=
-GEMINI_API_KEY=
-MAPBOX_TOKEN=
-JWT_SECRET=
-Roadmap
+```
 
-Phase 1
+### **Environment Variables**
+
+Create a `.env` file in the `backend` directory based on these requirements:
+```
+PORT=3000
+FRONTEND_URL=http://localhost:5173
+MONGODB_URI=
+JWT_SECRET=
+GEMINI_API_KEY=
+IMAGEKIT_PUBLIC_KEY=
+IMAGEKIT_PRIVATE_KEY=
+IMAGEKIT_URL_ENDPOINT=
+```
+
+Create a `.env` in the `frontend` directory if required by your client code (e.g., matching backend routes).
+
+---
+
+## **Roadmap**
+
+**Phase 1**
 Cricket, Football, Badminton across 3 states
 
-Phase 2
+**Phase 2**
 10 sports across 28 states
 Federation partnerships
 
-Phase 3
+**Phase 3**
 National athlete registry
 Khelo India integration
 SAI academy pipeline
 
-Vision
+---
+
+## **Vision**
 
 Scoutrix is not a sports app.
 
@@ -244,3 +253,12 @@ It is a digital infrastructure layer for India’s grassroots sports ecosystem.
 Discovery should depend on performance — not postcode.
 
 Talent has no address.
+
+---
+
+## **The Team**
+
+* [@PI-Prasaad-Krishna](https://github.com/PI-Prasaad-Krishna)
+* [@Risha-Jayaraj](https://github.com/Risha-Jayaraj)
+* [@Abhinav-anil-5670](https://github.com/Abhinav-Anil-5670)
+* [@Siva-0317](https://github.com/Siva-0317)

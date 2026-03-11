@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LandingPage from './pages/LandingPage';
@@ -19,6 +20,7 @@ import './App.css';
 function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState('en-IN'); // Default English
+  const location = useLocation();
 
   // Initialize the auto-translate hook globally
   useAutoTranslate(currentLanguage);
@@ -32,8 +34,7 @@ function App() {
       return null;
     }
   });
-
-  const handleLoginSuccess = (userData) => {
+  const handleLoginSuccess = (userData) => {
     setUser(userData);
     localStorage.setItem('scoutrixUser', JSON.stringify(userData));
     setIsAuthModalOpen(false);
@@ -61,17 +62,19 @@ function App() {
         currentLanguage={currentLanguage}
         onLanguageChange={setCurrentLanguage}
       />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/about" element={<AboutPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
-        <Route path="/athletes" element={<ForAthletesPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
-        <Route path="/scouts" element={<ForScoutsPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
-        <Route path="/sports" element={<BySportPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
-        <Route path="/regions" element={<ByRegionPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
-        <Route path="/dashboard/athlete" element={<AthleteDashboard user={user} />} />
-        <Route path="/dashboard/recruiter" element={<RecruiterDashboard user={user} />} />
-        <Route path="/saved-profiles" element={<SavedProfiles user={user} />} />
-      </Routes>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
+          <Route path="/athletes" element={<ForAthletesPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
+          <Route path="/scouts" element={<ForScoutsPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
+          <Route path="/sports" element={<BySportPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
+          <Route path="/regions" element={<ByRegionPage onOpenAuth={() => setIsAuthModalOpen(true)} />} />
+          <Route path="/dashboard/athlete" element={<AthleteDashboard user={user} />} />
+          <Route path="/dashboard/recruiter" element={<RecruiterDashboard user={user} />} />
+          <Route path="/saved-profiles" element={<SavedProfiles user={user} />} />
+        </Routes>
+      </AnimatePresence>
       <Footer />
       <AuthModal
         isOpen={isAuthModalOpen}

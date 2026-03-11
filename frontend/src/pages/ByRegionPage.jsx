@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import indianMap from '../assets/Indian map.png';
 import './ByRegionPage.css';
 
@@ -8,7 +9,13 @@ const ByRegionPage = ({ onOpenAuth }) => {
     }, []);
 
     return (
-        <main className="region-page-main">
+        <motion.main 
+            className="region-page-main"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        >
             <section className="region-hero">
                 <div className="region-hero-content">
                     <div className="badge">TALENT EVERYWHERE</div>
@@ -68,7 +75,7 @@ const ByRegionPage = ({ onOpenAuth }) => {
                     </div>
                 </div>
             </section>
-        </main>
+        </motion.main>
     );
 };
 

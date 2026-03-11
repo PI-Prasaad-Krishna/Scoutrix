@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './AboutPage.css';
 
 const AboutPage = ({ onOpenAuth }) => {
@@ -9,7 +10,13 @@ const AboutPage = ({ onOpenAuth }) => {
     }, []);
 
     return (
-        <main className="about-page-main">
+        <motion.main 
+            className="about-page-main"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        >
             {/* About Hero Section */}
             <section className="about-hero">
                 <div className="about-hero-content">
@@ -106,7 +113,7 @@ const AboutPage = ({ onOpenAuth }) => {
                     </div>
                 </div>
             </section>
-        </main>
+        </motion.main>
     );
 };
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import './BySportPage.css';
 
 const BySportPage = ({ onOpenAuth }) => {
@@ -7,7 +8,13 @@ const BySportPage = ({ onOpenAuth }) => {
     }, []);
 
     return (
-        <main className="sport-page-main">
+        <motion.main 
+            className="sport-page-main"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        >
             <section className="sport-hero">
                 <div className="sport-hero-content">
                     <div className="badge">TAILORED ANALYTICS</div>
@@ -67,7 +74,7 @@ const BySportPage = ({ onOpenAuth }) => {
                     </div>
                 </div>
             </section>
-        </main>
+        </motion.main>
     );
 };
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import './ForScoutsPage.css';
 
 const ForScoutsPage = ({ onOpenAuth }) => {
@@ -7,7 +8,13 @@ const ForScoutsPage = ({ onOpenAuth }) => {
     }, []);
 
     return (
-        <main className="scouts-page-main">
+        <motion.main 
+            className="scouts-page-main"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        >
             <section className="scouts-hero">
                 <div className="scouts-hero-content">
                     <div className="badge">FIND THE NEXT STAR</div>
@@ -67,7 +74,7 @@ const ForScoutsPage = ({ onOpenAuth }) => {
                     </div>
                 </div>
             </section>
-        </main>
+        </motion.main>
     );
 };
 

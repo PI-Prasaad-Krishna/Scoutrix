@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import './ForAthletesPage.css';
 
 const ForAthletesPage = ({ onOpenAuth }) => {
@@ -7,7 +8,13 @@ const ForAthletesPage = ({ onOpenAuth }) => {
     }, []);
 
     return (
-        <main className="athletes-page-main">
+        <motion.main 
+            className="athletes-page-main"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        >
             <section className="athletes-hero">
                 <div className="athletes-hero-content">
                     <div className="badge">POWER YOUR JOURNEY</div>
@@ -67,7 +74,7 @@ const ForAthletesPage = ({ onOpenAuth }) => {
                     </div>
                 </div>
             </section>
-        </main>
+        </motion.main>
     );
 };
 

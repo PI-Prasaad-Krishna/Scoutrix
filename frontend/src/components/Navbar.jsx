@@ -65,24 +65,50 @@ const Navbar = ({ user, onOpenAuth, onLogout, currentLanguage, onLanguageChange 
                 </Link>
             </div>
 
-            {/* Nav tabs — only visible to guests (not logged-in users) */}
-            {!user && (
-                <div className={`navbar-tabs ${isMobileMenuOpen ? 'mobile-active' : ''}`}>
-                    {tabs.map((tab, idx) => (
-                        <Link key={idx} to={tab.path} className="navbar-tab" onClick={() => setIsMobileMenuOpen(false)}>
-                            <span>{tab.name}</span>
-                        </Link>
-                    ))}
+            <div className={`navbar-tabs ${isMobileMenuOpen ? 'mobile-active' : ''}`}>
+                {/* Standard tabs shown only for guests */}
+                {!user && tabs.map((tab, idx) => (
+                    <Link key={idx} to={tab.path} className="navbar-tab" onClick={() => setIsMobileMenuOpen(false)}>
+                        <span>{tab.name}</span>
+                    </Link>
+                ))}
 
-                    {/* Mobile: Log In button */}
+                {/* Mobile-only logic */}
+                {!user ? (
                     <button className="btn-login-unified mobile-login-btn" onClick={() => {
                         setIsMobileMenuOpen(false);
                         onOpenAuth();
                     }}>
                         LOG IN
                     </button>
-                </div>
-            )}
+                ) : (
+                    <>
+                        <div className="mobile-user-info">
+                            <div className="mobile-avatar">
+                                {user.name?.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="mobile-user-details">
+                                <span className="mobile-name">{user.name}</span>
+                                <span className="mobile-role">{user.role}</span>
+                            </div>
+                        </div>
+
+                        <Link to={user.role === 'athlete' ? '/dashboard/athlete' : '/dashboard/recruiter'} className="navbar-tab mobile-only-tab" onClick={() => setIsMobileMenuOpen(false)}>
+                            <span>Dashboard</span>
+                        </Link>
+                        
+                        {user.role === 'recruiter' && (
+                            <Link to="/saved-profiles" className="navbar-tab mobile-only-tab" onClick={() => setIsMobileMenuOpen(false)}>
+                                <span>Saved Profiles</span>
+                            </Link>
+                        )}
+
+                        <button className="navbar-tab mobile-logout-btn" onClick={handleLogout}>
+                            <span>Log Out</span>
+                        </button>
+                    </>
+                )}
+            </div>
 
             <div className="navbar-actions">
                 {/* Language Selector */}
